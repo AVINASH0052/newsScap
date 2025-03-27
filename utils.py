@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from transformers import pipeline
 from keybert import KeyBERT
+from gtts import gTTS
 
 def scrape_news(company):
     url = f"https://www.reuters.com/search/news?blob={company}"
@@ -43,7 +44,7 @@ tts = pipeline("text-to-speech", model="facebook/fastspeech2-hi")
 def generate_hindi_tts(text):
     summary_en = text[:500]
     summary_hi = translator(summary_en)[0]['translation_text']
-    audio = tts(summary_hi)
-    with open("output.mp3", "wb") as f:
-        f.write(audio["audio"])
-    return "output.mp3", summary_hi
+    tts = gTTS(text=summary_hi, lang='hi', slow=False)
+    audio_path = "output.mp3"
+    tts.save(audio_path)
+    return audio_path, summary_hi
