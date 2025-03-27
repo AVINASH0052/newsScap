@@ -1,0 +1,9 @@
+streamlit
+fastapi
+uvicorn
+beautifulsoup4
+requests
+transformers
+torch
+keybert
+python-multipart
