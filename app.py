@@ -21,7 +21,7 @@ if company:
             st.write(f"**Title**: {article['title']}")
             st.write(f"**Summary**: {article['summary']}")
             st.write(f"**Sentiment**: {article['sentiment']}")
-            st.write(f"**Topics**: {', '.join(article['topics']}")
+            st.write(f"**Topics**: {', '.join(article['topics'])}")
             st.markdown("---")
         
         comparative = compare_analysis(articles)
