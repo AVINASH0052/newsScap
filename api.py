@@ -1,24 +1,16 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from utils import scrape_news, analyze_sentiment, extract_topics, compare_analysis, generate_hindi_tts
+from utils import scrape_news, analyze_sentiment, generate_tts
 
 app = FastAPI()
 
 class CompanyRequest(BaseModel):
-    company: str
+    company_name: str
 
-@app.post("/analyze")
-async def analyze_news(request: CompanyRequest):
-    articles = scrape_news(request.company)
-    for article in articles:
-        article['sentiment'] = analyze_sentiment(article['content'])
-        article['topics'] = extract_topics(article['content'])
-    comparative = compare_analysis(articles)
-    summary = " ".join([a['summary'] for a in articles])
-    audio_path, hindi_summary = generate_hindi_tts(summary)
-    return {
-        "articles": articles,
-        "comparative": comparative,
-        "audio_path": audio_path,
-        "hindi_summary": hindi_summary
-    }
+@app.post("/process")
+async def process_news(request: CompanyRequest):
+    company = request.company_name
+    articles = scrape_news(company)
+    analyzed_articles = analyze_sentiment(articles)
+    tts_path = generate_tts(analyzed_articles)
+    return {"articles": analyzed_articles, "tts_path": tts_path}
